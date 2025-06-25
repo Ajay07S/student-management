@@ -1,0 +1,107 @@
+import java.util.*;
+
+class Student {
+    int id;
+    String name;
+    double marks;
+
+    public Student(int id, String name, double marks) {
+        this.id = id;
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public String toString() {
+        return "ID: " + id + ", Name: " + name + ", Marks: " + marks;
+    }
+}
+
+public class StudentSystem {
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final List<Student> students = new ArrayList<>();
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n--- Student Management Menu ---");
+            System.out.println("1. Add Student");
+            System.out.println("2. View All Students");
+            System.out.println("3. Update Student");
+            System.out.println("4. Delete Student");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+
+            String choice = scanner.nextLine();
+
+            switch (choice) {
+                case "1" -> addStudent();
+                case "2" -> viewStudents();
+                case "3" -> updateStudent();
+                case "4" -> deleteStudent();
+                case "5" -> {
+                    System.out.println("Exiting system.");
+                    return;
+                }
+                default -> System.out.println("Invalid choice.");
+            }
+        }
+    }
+
+    private static void addStudent() {
+        try {
+            System.out.print("Enter ID: ");
+            int id = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Enter Marks: ");
+            double marks = Double.parseDouble(scanner.nextLine());
+
+            students.add(new Student(id, name, marks));
+            System.out.println("Student added.");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input format.");
+        }
+    }
+
+    private static void viewStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No records found.");
+        } else {
+            System.out.println("\nStudent List:");
+            for (Student s : students) {
+                System.out.println(s);
+            }
+        }
+    }
+
+    private static void updateStudent() {
+        System.out.print("Enter ID to update: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        for (Student s : students) {
+            if (s.id == id) {
+                System.out.print("Enter new Name: ");
+                s.name = scanner.nextLine();
+                System.out.print("Enter new Marks: ");
+                s.marks = Double.parseDouble(scanner.nextLine());
+                System.out.println("Student updated.");
+                return;
+            }
+        }
+        System.out.println("Student not found.");
+    }
+
+    private static void deleteStudent() {
+        System.out.print("Enter ID to delete: ");
+        int id = Integer.parseInt(scanner.nextLine());
+
+        Iterator<Student> iterator = students.iterator();
+        while (iterator.hasNext()) {
+            if (iterator.next().id == id) {
+                iterator.remove();
+                System.out.println("Student deleted.");
+                return;
+            }
+        }
+        System.out.println("Student not found.");
+    }
+}
